@@ -50,6 +50,7 @@ end
 
 local jumpHeight = 200
 local timeToPeak = 0.2
+local attacks = {}
 
 local jumpVelocity = -(2 * jumpHeight / timeToPeak)
 local gravityP1 = (2 * jumpHeight) / (timeToPeak * timeToPeak)
@@ -93,10 +94,16 @@ function onCreate()
 
     -- Player 1 hitbox
     makeLuaSprite('p1Hitbox', '', 0, 0)
-    makeGraphic('p1Hitbox', 420, getProperty('boyfriend.height'), '000000')
-
+    makeGraphic('p1Hitbox', 420, getProperty('boyfriend.height'), '28AB67')
+    setProperty('p1Hitbox.alpha', 0.5)
     setObjectCamera('p1Hitbox', 'camGame')
     addLuaSprite('p1Hitbox', false)
+
+    makeLuaSprite('p2Hitbox', '', 0, 0)
+    makeGraphic('p2Hitbox', 420, getProperty('dad.height'), '28AB67')
+    setProperty('p2Hitbox.alpha', 0.5)
+    setObjectCamera('p2Hitbox', 'camGame')
+    addLuaSprite('p2Hitbox', false)
 end
 
 
@@ -111,8 +118,22 @@ end
 -- =========================================
 
 function onUpdate()
+    
+
+
     setProperty('p1Hitbox.x', getProperty('boyfriend.x'))
     setProperty('p1Hitbox.y', getProperty('boyfriend.y'))
+
+   
+
+    setProperty('p2Hitbox.x', getProperty('dad.x'))
+    setProperty('p2Hitbox.y', getProperty('dad.y'))
+    for attack = 1, #attacks do
+        local att = attacks[attack]
+        if checkCollision(player2name, att) then
+            setProperty('dad.alpha', 0.5)
+        end
+    end
 end
 
 
@@ -258,7 +279,7 @@ function onUpdatePost(elapsed)
         setProperty('shot' .. i .. '.alpha', 0.5)
 
         addLuaSprite('shot' .. i, false)
-
+        table.insert(attacks, 'shot' .. i)
         playAnim('boyfriend', 'attack', false)
         setProperty('boyfriend.specialAnim', true)
 

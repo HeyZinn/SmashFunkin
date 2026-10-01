@@ -1,3 +1,4 @@
+--[[
 attacks = {}
 
 
@@ -9,5 +10,6 @@ function onUpdate()
         end
     end
 end
+]]
 
     
